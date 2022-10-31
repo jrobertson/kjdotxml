@@ -1,0 +1,433 @@
+<tests>
+  <summary>
+    <title>rexleparser testdata</title>
+    <recordx_type>polyrex</recordx_type>
+    <schema>tests/test[path,description]/io[type,*]</schema>
+    <ruby_version>ruby 2.2.0preview1 (2014-09-17 trunk 47616) [x86_64-linux]</ruby_version>
+    <script>//job:test http://a0.jamesrobertson.me.uk/rorb/r/gemtest/rexleparser.rsf</script>
+    <test_dir>/home/james/jamesrobertson.me.uk/test-ruby/rexleparser</test_dir>    
+  </summary>
+  <records>
+    <test>
+      <summary>
+        <path>1</path>
+        <type>to_a only</type>
+        <description>simple test</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+<abc2><a>apple<ggg>444</ggg></a></abc2>
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["abc2", {}, ["a", {}, "apple", ["ggg", {}, "444"]]]</value>
+          </summary>
+        </output>
+      </records>
+    </test>
+    <test>
+      <summary>
+        <path>2</path>
+        <type>to_a only</type>
+        <description>string after nested tag</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+<abc><a>apple<ggg>444</ggg>orange</a></abc>
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["abc", {}, ["a", {}, "apple", ["ggg", {}, "444"], "orange"]]</value>
+          </summary>
+        </output>
+      </records>
+    </test>
+    <test>
+      <summary>
+        <path>3</path>
+        <type>to_a only</type>
+        <description>newline character between elements</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+<root>
+  <abc>Testing rightly or wrongly</abc>
+  <c><fun>this should be fun with the music from the magic roundabout playing in the background</fun></c>
+</root>
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["root", {}, "\n  ", ["abc", {}, "Testing rightly or wrongly"], "\n  ", ["c", {}, ["fun", {}, "this should be fun with the music from the magic roundabout playing in the background"]], "\n"]</value>
+          </summary>
+        </output>
+      </records>
+    </test>        
+    <test>
+      <summary>
+        <path>4</path>
+        <type>to_a only</type>
+        <description>commented tag</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+<a><!--<b>123</b>--><b2>456</b2></a>
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>
+              <![CDATA[
+["a", {}, ["!-", {}, "<b>123</b>"], ["b2", {}, "456"]]
+
+              ]]>
+            </value>
+          </summary>
+        </output>
+      </records>
+    </test>         
+    <test>
+      <summary>
+        <path>5</path>
+        <type>to_a only</type>
+        <description>text after an element</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+                <abc><a>apple<ggg>444</ggg>orange</a></abc>
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>
+        <![CDATA[
+["abc", {}, ["a", {}, "apple", ["ggg", {}, "444"], "orange"]]
+        ]]>
+      </value>
+          </summary>
+        </output>
+      </records>
+    </test>
+    <test>
+      <summary>
+        <path>6</path>
+        <type>to_a only</type>
+        <description>an angle bracket inside an element value</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+<a>push->pin2</a>
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>
+        <![CDATA[
+["a", {}, "push-&amp;gt;", "pin2"]
+        ]]>
+      </value>
+          </summary>
+        </output>
+      </records>
+    </test>   
+    <test>
+      <summary>
+        <path>7</path>
+        <type>to_a only</type>
+        <description>contains node attributes</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+<abc><a>apple<ggg>444</ggg></a></abc>
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>
+              ["abc", {}, ["a", {}, "apple", ["ggg", {}, "444"]]]
+            </value>
+          </summary>
+        </output>
+      </records>
+    </test>    
+    <test>
+      <summary>
+        <path>8</path>
+        <type>to_a only</type>
+        <description>contains a comment in a new line</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+<a>
+<!-- 123 -->
+</a>
+
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["a", {}, "\n", ["!-", {}, " 123 "], "\n"]</value>
+          </summary>
+        </output>
+      </records>
+    </test>
+    <test>
+      <summary>
+        <path>9</path>
+        <type>unescape to_a only</type>
+        <description>contains a comment in a new line</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+&lt;root&gt;&lt;apple&gt;&lt;![CDATA[\n    123 ]]&gt;&lt;/apple&gt;&lt;/root&gt;
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["root", {}, ["apple", {}, ["![", {}, "\\n    123 "]]]</value>
+          </summary>
+        </output>
+      </records>
+    </test>    
+    <test>
+      <summary>
+        <path>10</path>
+        <type>unescape to_a only</type>
+        <description>tags within CDATA in the context of new line characters should be ignore</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+&lt;package&gt;
+&lt;![CDATA[   
+  w&lt;/job&gt;"
+  ]]&gt;
+&lt;/package&gt;
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["package", {}, "\n", ["![", {}, "   \n  w&lt;/job&gt;\"\n  "], "\n"]</value>
+          </summary>
+        </output>
+      </records>
+    </test>
+    <test>
+      <summary>
+        <path>11</path>
+        <type>unescape to_a only</type>
+        <description></description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+&lt;root&gt;
+  &lt;apple&gt;
+    &lt;![CDATA[
+    123
+    ]]&gt;
+  &lt;/apple&gt;
+&lt;/root&gt;
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["root", {}, "\n  ", ["apple", {}, "\n    ", ["![", {}, "\n    123\n    "], "\n  "], "\n"]</value>
+          </summary>
+        </output>
+      </records>
+    </test>
+    <test>
+      <summary>
+        <path>12</path>
+        <type>unescape to_a only</type>
+        <description></description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+
+&lt;?xml version='1.0' encoding='UTF-8'?&gt;&lt;root&gt;&lt;cake&gt;carrot&lt;/cake&gt;&lt;biscuit&gt;chocolate&lt;/biscuit&gt;&lt;pie&gt;lemon&lt;/pie&gt;&lt;/root&gt;
+
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["root", {}, ["cake", {}, "carrot"], ["biscuit", {}, "chocolate"], ["pie", {}, "lemon"]]</value>
+          </summary>
+        </output>
+      </records>
+    </test>       
+    <test>
+      <summary>
+        <path>13</path>
+        <type>unescape to_a only</type>
+        <description></description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+&lt;![CDATA[
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"&gt;
+
+&lt;xsl:template match="*"&gt;
+  &lt;html&gt;
+    &lt;head&gt;
+    &lt;!--&lt;link rel='stylesheet' type='text/css' href='http://a0.jamesrobertson.me.uk/dynarex/layout.css' media='screen, projection, tv, print'&gt;&lt;/link&gt;--&gt;
+    &lt;xsl:choose&gt;
+      &lt;xsl:when test="summary/css"&gt;
+    &lt;link rel='stylesheet' type='text/css' href='http://a0.jamesrobertson.me.uk/{summary/css}' media='screen, projection, tv, print'&gt;&lt;/link&gt;
+
+      &lt;/xsl:when&gt;    
+      &lt;xsl:otherwise&gt;
+    &lt;link rel='stylesheet' type='text/css' href='http://a0.jamesrobertson.me.uk/css/dynarex-c.css' media='screen, projection, tv, print'&gt;&lt;/link&gt;
+      &lt;/xsl:otherwise&gt;
+    &lt;/xsl:choose&gt;
+    &lt;/head&gt;
+  &lt;/html&gt;
+&lt;/xsl:template&gt;
+&lt;/xsl:stylesheet&gt;
+
+
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>
+              <![CDATA[
+["xsl:stylesheet", {:"xmlns:xsl"=>"http://www.w3.org/1999/XSL/Transform", :version=>"1.0"}, "\n\n", ["xsl:template", {:match=>"*"}, "\n  ", ["html", {}, "\n    ", ["head", {}, "\n    ", ["!-", {}, "<link rel='stylesheet' type='text/css' href='http://a0.jamesrobertson.me.uk/dynarex/layout.css' media='screen, projection, tv, print'></link>"], "\n    ", ["xsl:choose", {}, "\n      ", ["xsl:when", {:test=>"summary/css"}, "\n    ", ["link", {:rel=>"stylesheet", :type=>"text/css", :href=>"http://a0.jamesrobertson.me.uk/{summary/css}", :media=>"screen, projection, tv, print"}], "\n\n      "], "    \n      ", ["xsl:otherwise", {}, "\n    ", ["link", {:rel=>"stylesheet", :type=>"text/css", :href=>"http://a0.jamesrobertson.me.uk/css/dynarex-c.css", :media=>"screen, projection, tv, print"}], "\n      "], "\n    "], "\n    "], "\n  "], "\n"], "\n"]              
+  ]]>
+              </value>
+          </summary>
+        </output>
+      </records>
+    </test>
+    <test>
+      <summary>
+        <path>14</path>
+        <type>unescape to_a only</type>
+        <description></description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+ &lt;package&gt;
+  &lt;job id='create_html'&gt;
+    &lt;script&gt;
+&lt;![CDATA[
+
+
+buffer =&lt;&lt;HTML
+&lt;?xml version='1.0' encoding='UTF-8'?&gt;
+&lt;html lang="en"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"/&gt;
+  &lt;title&gt;The HTML5 template&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+
+&lt;/body&gt;
+&lt;/html&gt;
+HTML
+
+]]&gt;
+    &lt;/script&gt;
+  &lt;/job&gt;
+&lt;/package&gt;
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>
+              <![CDATA[
+["package", {}, "\n  ", ["job", {:id=>"create_html"}, "\n    ", ["script", {}, "\n", ["![", {}, "\n\n\nbuffer =<<HTML\n<?xml version='1.0' encoding='UTF-8'?>\n<html lang=\"en\">\n<head>\n  <meta charset=\"utf-8\"/>\n  <title>The HTML5 template</title>\n</head>\n<body>\n\n</body>\n</html>\nHTML\n\n"], "\n    "], "\n  "], "\n"]
+  ]]>
+              </value>
+          </summary>
+        </output>
+      </records>
+    </test>        
+    <test>
+      <summary>
+        <path>15</path>
+        <type>to_a only</type>
+        <description>simple test</description>
+      </summary>
+      <records>
+        <input>
+          <summary>
+            <xml>
+              <![CDATA[
+<a>
+<b encoding="test"
+            declaration="yes"/>
+</a>
+              ]]>
+            </xml>
+          </summary>
+        </input>
+        <output>
+          <summary>
+            <value>["a", {}, "\n", ["b", {:encoding=>"test", :declaration=>"yes"}], "\n"]</value>
+          </summary>
+        </output>
+      </records>
+    </test>    
+  </records>
+</tests>
