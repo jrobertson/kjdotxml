@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'kjdotxml'
-  s.version = '0.1.0'
+  s.version = '0.1.1'
   s.summary = 'King James Bible in XML format i.e. KjDotXml.new.book("Genesis")'
   s.authors = ['James Robertson']
   s.add_runtime_dependency('rexle', '~> 1.5', '>=1.5.14')

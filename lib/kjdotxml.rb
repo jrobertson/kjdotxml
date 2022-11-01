@@ -79,19 +79,20 @@ end
 
 class KjDotXml
 
-  def initialize()
+  def initialize(title=nil)
+    book(title) if title
   end
   
   def book(s)
-    
-    #filepath = File.join('/tmp', s.downcase.gsub(/\s/,'-') + '.xml')
+        
     filename = s.downcase.gsub(/\s/,'-') + '.xml'
+    #filepath = File.join('/tmp', filename)
     filepath = File.join(File.dirname(__FILE__), '..', 'xml', filename)
     
     if File.exists? filepath then
       
       contents = File.read(filepath)
-      Rexle.new(contents)
+      @doc = Rexle.new(contents)
       
     else
       raise KjDotXmlError, 'book not found'
@@ -103,6 +104,7 @@ class KjDotXml
     BOOKS
   end
 
-  
+  def to_doc()
+    @doc
+  end
 end
-
