@@ -95,7 +95,8 @@ class KjDotXml
   def book(s)
         
     filename = s.downcase.gsub(/\s/,'-') + '.xml'
-    filepath = File.join(File.dirname(__FILE__), '..', 'xml', filename)
+    filepath = File.join('/home/james/jamesrobertson.eu/rorb/r/ruby/kjdotxml', filename)
+    #filepath = File.join(File.dirname(__FILE__), '..', 'xml', filename)
     
     if File.exists? filepath then
       
@@ -119,6 +120,16 @@ class KjDotXml
 
 
   end
+  
+  def text(s)
+
+    s.strip.lines.map do |line|
+
+      [line, verses(line.chomp)]
+
+    end
+
+  end  
 
   def verses(s)
 
